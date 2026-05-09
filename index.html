@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 19 | Una Historia Especial ❤️</title>
+
+    <!-- Meta Tags SEO -->
+    <meta name="description"
+        content="Una celebración digital cinematográfica para un cumpleaños número 19 muy especial.">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Playfair Display (Elegante) e Inter (Moderna) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- GSAP para animaciones cinematográficas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --primary-glow: rgba(255, 107, 107, 0.4);
+            --secondary-glow: rgba(255, 183, 178, 0.3);
+            --bg-dark: #050505;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+            /* Usaremos cursor personalizado */
+        }
+
+        h1,
+        h2,
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* --- EFECTOS DE FONDO --- */
+        .bg-animated-gradient {
+            background: radial-gradient(circle at 50% 50%, #1a0b0b 0%, #050505 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .glow-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), var(--primary-glow) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            transition: background 0.1s ease;
+            opacity: 0.6;
+        }
+
+        /* --- CURSOR CUSTOM --- */
+        #custom-cursor {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
+        }
+
+        #cursor-blur {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.15) 0%, transparent 70%);
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+        }
+
+        /* --- GLASSMORPHISM --- */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* --- ANIMACIONES --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: rgba(255, 107, 107, 0.6);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --- GALLERY GRID --- */
+        .gallery-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            aspect-ratio: 4/5;
+            cursor: pointer;
+        }
+
+        .gallery-card img {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gallery-card:hover img {
+            transform: scale(1.1) rotate(1deg);
+        }
+
+        .gallery-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .gallery-card:hover::after {
+            opacity: 1;
+        }
+
+        /* --- TIMELINE --- */
+        .timeline-line {
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, #ff6b6b, transparent);
+            height: 100%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* --- MÚSICA --- */
+        .music-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 107, 107, 0.2);
+        }
+
+        .music-waves {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .wave {
+            width: 3px;
+            height: 15px;
+            background: #ff6b6b;
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .wave:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes wave {
+
+            0%,
+            100% {
+                height: 5px;
+            }
+
+            50% {
+                height: 20px;
+            }
+        }
+
+        /* --- LIGHTBOX --- */
+        #lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            padding: 20px;
+            cursor: zoom-out;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(255, 107, 107, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Cursor Personalizado -->
+    <div id="custom-cursor"></div>
+    <div id="cursor-blur"></div>
+
+    <!-- Fondo Animado -->
+    <div class="bg-animated-gradient"></div>
+    <div class="glow-overlay" id="glow"></div>
+    <div id="particles-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- 1. HERO SECTION -->
+    <section class="min-h-screen flex items-center justify-center relative px-6 overflow-hidden">
+        <div class="text-center z-10">
+            <p class="serif italic text-rose-300 text-xl md:text-2xl mb-4 tracking-widest fade-in">Desde el primer
+                momento...</p>
+            <h1 class="text-7xl md:text-9xl font-bold mb-6 tracking-tighter fade-in" id="hero-title">
+                Happy 19 <span class="text-rose-500 inline-block floating">❤️</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-gray-400 text-lg md:text-xl font-light fade-in leading-relaxed">
+                Hoy celebramos tus diecinueve años, diecinueve razones más para admirarte. <br>
+                Una vida llena de luz, sueños y momentos inolvidables.
+            </p>
+            <div class="mt-12 fade-in">
+                <a href="#galeria"
+                    class="glass px-10 py-4 rounded-full text-sm uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all duration-500 group">
+                    Ver recuerdos
+                    <i class="fa-solid fa-chevron-down ml-2 group-hover:translate-y-1 transition-transform"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Decoración abstracta -->
+        <div class="absolute top-1/4 -left-20 w-64 h-64 bg-rose-600/10 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-1/4 -right-20 w-80 h-80 bg-amber-500/10 blur-[120px] rounded-full"></div>
+    </section>
+
+    <!-- 2. GALERÍA PREMIUM -->
+    <section id="galeria" class="py-32 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-20">
+            <div class="h-1 w-20 bg-rose-500 mx-auto rounded-full fade-in"></div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8" id="image-grid">
+            <!-- Foto 1 -->
+            <div class="gallery-card fade-in" onclick="openLightbox('images/photo1.jpg')">
+                <img src="images/photo1.jpeg" alt="Momentos"
+                    class="w-full h-full object-cover grayscale hover:grayscale-0">
+                <div
+                    class="absolute bottom-4 left-4 z-10 text-xs tracking-widest uppercase opacity-0 transition-all transform translate-y-4 gallery-card-text">
+                    Detalles</div>
+            </div>
+            <!-- Foto 2 -->
+            <div class="gallery-card fade-in" onclick="openLightbox('images/photo2.jpg')">
+                <img src="images/photo2.jpeg" alt="Momentos"
+                    class="w-full h-full object-cover grayscale hover:grayscale-0">
+            </div>
+            <!-- Foto 3 -->
+            <div class="gallery-card fade-in" onclick="openLightbox('images/photo3.jpg')">
+                <img src="images/photo3.jpeg" alt="Momentos"
+                    class="w-full h-full object-cover grayscale hover:grayscale-0">
+            </div>
+            <!-- Foto 4 -->
+            <div class="gallery-card fade-in" onclick="openLightbox('images/photo4.jpg')">
+                <img src="images/photo4.jpeg" alt="Momentos"
+                    class="w-full h-full object-cover grayscale hover:grayscale-0">
+            </div>
+            <!-- Foto 5 -->
+            <div class="gallery-card fade-in" onclick="openLightbox('images/photo5.jpg')">
+                <img src="images/photo5.jpeg" alt="Momentos"
+                    class="w-full h-full object-cover grayscale hover:grayscale-0">
+            </div>
+            <!-- Foto 6 -->
+            <div class="gallery-card fade-in" onclick="openLightbox('images/photo6.jpg')">
+                <img src="images/photo6.jpeg" alt="Momentos"
+                    class="w-full h-full object-cover grayscale hover:grayscale-0">
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 3. TIMELINE EMOCIONAL -->
+    <section class="py-32 bg-zinc-950/50 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-6 relative">
+            <div class="timeline-line"></div>
+
+            <!-- Item 1 -->
+            <div class="relative mb-24 md:flex items-center justify-between w-full fade-in">
+                <div class="hidden md:block w-5/12"></div>
+                <div
+                    class="z-20 w-4 h-4 bg-rose-500 rounded-full border-4 border-black absolute left-1/2 -translate-x-1/2 shadow-[0_0_15px_rgba(244,63,94,0.8)]">
+                </div>
+                <div class="md:w-5/12 glass p-8 rounded-2xl ml-8 md:ml-0 group hover:bg-rose-500/5 transition-colors">
+                    <span class="text-rose-400 text-sm tracking-tighter serif italic">Tu esencia</span>
+                    <h3 class="text-2xl font-bold mt-2 mb-3">Un brillo especial</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Desde que te conocí, ha sido evidente que tienes
+                        una energía única que ilumina cualquier lugar.</p>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="relative mb-24 md:flex flex-row-reverse items-center justify-between w-full fade-in">
+                <div class="hidden md:block w-5/12"></div>
+                <div
+                    class="z-20 w-4 h-4 bg-amber-400 rounded-full border-4 border-black absolute left-1/2 -translate-x-1/2 shadow-[0_0_15px_rgba(251,191,36,0.8)]">
+                </div>
+                <div class="md:w-5/12 glass p-8 rounded-2xl mr-8 md:mr-0 group hover:bg-amber-500/5 transition-colors">
+                    <span class="text-amber-300 text-sm tracking-tighter serif italic">Descubriendo</span>
+                    <h3 class="text-2xl font-bold mt-2 mb-3">Nuevos horizontes</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Cada conversación y cada momento compartido son una
+                        oportunidad para admirar la gran persona que eres.</p>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="relative md:flex items-center justify-between w-full fade-in">
+                <div class="hidden md:block w-5/12"></div>
+                <div
+                    class="z-20 w-4 h-4 bg-rose-500 rounded-full border-4 border-black absolute left-1/2 -translate-x-1/2 shadow-[0_0_15px_rgba(244,63,94,0.8)]">
+                </div>
+                <div class="md:w-5/12 glass p-8 rounded-2xl ml-8 md:ml-0 group hover:bg-rose-500/5 transition-colors">
+                    <span class="text-rose-400 text-sm tracking-tighter serif italic">El presente</span>
+                    <h3 class="text-2xl font-bold mt-2 mb-3">Tus mágicos 19</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">La mejor versión de ti está aquí hoy, lista para
+                        conquistar todo lo que se proponga en este nuevo año.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. CARTA ROMÁNTICA -->
+    <section class="py-32 px-6">
+        <div class="max-w-3xl mx-auto glass p-12 md:p-20 rounded-[2rem] relative overflow-hidden fade-in shadow-2xl">
+            <!-- Efecto de iluminación interna -->
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-rose-500/10 blur-[80px] rounded-full"></div>
+
+            <div class="relative z-10">
+                <i class="fa-solid fa-quote-left text-4xl text-rose-500/30 mb-8"></i>
+                <div id="typewriter" class="serif text-xl md:text-3xl leading-relaxed italic text-gray-200">
+                    "A veces me pregunto cómo es posible que alguien tenga tanta luz. En tus diecinueve años has logrado
+                    que mi mundo sea un lugar mejor. Eres una persona increíble, mi paz en el caos y el regalo más
+                    hermoso que la vida me ha dado. Que este año sea tan brillante como tu mirada. Te quiero hoy, mañana
+                    y siempre."
+                </div>
+                <div class="mt-12 flex items-center gap-4">
+                    <div class="h-[1px] w-12 bg-rose-500"></div>
+                    <span class="tracking-[0.5em] uppercase text-xs text-rose-300">Con mucho cariño</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. FOOTER -->
+    <footer class="py-20 text-center border-t border-white/5 bg-black/50">
+        <p class="text-gray-500 text-sm tracking-widest fade-in">
+            Hecho con cariño para una persona única ❤️
+        </p>
+        <div class="mt-4 flex justify-center gap-6 fade-in">
+            <a href="#" class="text-gray-600 hover:text-rose-400 transition-colors"><i
+                    class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="text-gray-600 hover:text-rose-400 transition-colors"><i
+                    class="fa-brands fa-spotify"></i></a>
+        </div>
+    </footer>
+
+    <!-- Botón Música -->
+    <button class="music-btn" id="music-toggle" title="Reproducir música">
+        <div id="music-icon">
+            <i class="fa-solid fa-play text-xs text-rose-500"></i>
+        </div>
+        <div id="music-playing-animation" class="music-waves hidden">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+    </button>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="flex items-center justify-center" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Zoom">
+    </div>
+
+    <!-- Audio Player (Invisible) -->
+    <audio id="bg-music" loop>
+        <source src="music/song.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+    </audio>
+
+    <script>
+        // --- INICIALIZACIÓN DE GSAP ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- MANEJO DEL CURSOR ---
+        const cursor = document.getElementById('custom-cursor');
+        const cursorBlur = document.getElementById('cursor-blur');
+        const glow = document.getElementById('glow');
+
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+            gsap.to(cursorBlur, { x: e.clientX, y: e.clientY, duration: 0.5 });
+
+            // Actualizar glow de fondo
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            glow.style.setProperty('--x', `${x}%`);
+            glow.style.setProperty('--y', `${y}%`);
+        });
+
+        // --- ANIMACIÓN DE REVELACIÓN (SCROLL) ---
+        const fadeElements = document.querySelectorAll('.fade-in');
+        fadeElements.forEach((el) => {
+            gsap.to(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 90%",
+                    toggleActions: "play none none none"
+                },
+                opacity: 1,
+                y: 0,
+                duration: 1.5,
+                ease: "power4.out"
+            });
+        });
+
+        // --- EFECTO CORAZONES FLOTANTES ---
+        function createHeart() {
+            const container = document.getElementById('particles-container');
+            const heart = document.createElement('i');
+            heart.classList.add('fa-solid', 'fa-heart', 'heart-particle');
+
+            const size = Math.random() * 15 + 5;
+            const startPos = Math.random() * window.innerWidth;
+
+            heart.style.left = startPos + 'px';
+            heart.style.bottom = '-20px';
+            heart.style.fontSize = size + 'px';
+            heart.style.opacity = Math.random() * 0.5 + 0.1;
+
+            container.appendChild(heart);
+
+            gsap.to(heart, {
+                y: -(window.innerHeight + 100),
+                x: (Math.random() - 0.5) * 200,
+                rotation: Math.random() * 360,
+                duration: Math.random() * 10 + 5,
+                ease: "none",
+                onComplete: () => heart.remove()
+            });
+        }
+
+        setInterval(createHeart, 800);
+
+        // --- MANEJO DE MÚSICA ---
+        const musicBtn = document.getElementById('music-toggle');
+        const music = document.getElementById('bg-music');
+        const musicIcon = document.getElementById('music-icon');
+        const musicAnim = document.getElementById('music-playing-animation');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.classList.remove('hidden');
+                musicAnim.classList.add('hidden');
+            } else {
+                music.play().catch(e => console.log("Auto-play prevenido por el navegador"));
+                musicIcon.classList.add('hidden');
+                musicAnim.classList.remove('hidden');
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // --- LIGHTBOX ---
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            lb.style.display = 'flex';
+            gsap.fromTo(lb, { opacity: 0 }, { opacity: 1, duration: 0.5 });
+            gsap.fromTo(img, { scale: 0.8 }, { scale: 1, duration: 0.5, ease: "back.out(1.7)" });
+        }
+
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            gsap.to(lb, { opacity: 0, duration: 0.3, onComplete: () => lb.style.display = 'none' });
+        }
+
+        // --- EFECTO TÍTULO HERO ---
+        gsap.from("#hero-title", {
+            duration: 2,
+            opacity: 0,
+            scale: 0.9,
+            ease: "expo.out",
+            delay: 0.5
+        });
+
+        // Simular lazy loading suave para las imágenes
+        document.querySelectorAll('.gallery-card img').forEach(img => {
+            img.addEventListener('load', function () {
+                gsap.to(this, { opacity: 1, duration: 1 });
+            });
+        });
+    </script>
+</body>
+
+</html>
